@@ -1,0 +1,11 @@
+/* * 檔案: data.json
+ * 描述: War Inc Rising 網站所有遊戲資料的主要 JSON 檔案。
+ * 目前為空，即將開始填寫單位資料。
+ */
+{
+    "version": "v0.7.4-214",
+    "last_updated": "2025-11-22",
+    "units": [],
+    "heroes": [],
+    "buildings": []
+}

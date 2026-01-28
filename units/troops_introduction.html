@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>士兵介紹</title> 
+    <link rel="stylesheet" href="../assets/css/style.css"> 
+    <style>
+        /* 單位介紹頁面特有樣式 */
+        .unit-table-container {
+            margin-top: 20px;
+            overflow-x: auto; 
+        }
+
+        .unit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.0em;
+            table-layout: fixed; 
+        }
+        
+        /* 預設/桌面版欄位寬度 (40/60) */
+        .unit-table th:first-child, .unit-table td:first-child {
+            width: 40%;
+        }
+        .unit-table th:last-child, .unit-table td:last-child {
+            width: 60%;
+        }
+
+        /* 修正 1: 移除通用 text-align: center;，讓所有內容預設靠左 */
+        .unit-table th, .unit-table td {
+            border: 1px solid #e0e0e0;
+            padding: 10px 8px;
+        }
+
+        .unit-table th {
+            background-color: var(--color-primary);
+            color: white;
+            font-weight: bold;
+            text-align: center; /* 標頭仍維持置中 */
+        }
+
+        .unit-table tr:nth-child(even) {
+            background-color: var(--color-background-card);
+        }
+
+        /* 單位圖標：固定為 200px 寬 x 300px (比例 2:3) */
+        .unit-icon {
+            width: 200px; 
+            height: 300px; 
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-bottom: 10px;
+            border: 4px solid var(--color-accent);
+            object-fit: cover; 
+            /* 確保圖片在單元格內水平居中 */
+            display: block; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 單位名稱儲存格：圖片居中，名稱在下方 */
+        .unit-name-cell {
+            text-align: center;
+            font-weight: bold;
+            padding: 25px 10px; 
+            line-height: 1.5;
+            font-size: 1.3em; 
+            vertical-align: middle; 
+        }
+        /* 重新定義單位名稱的樣式，使其更突出 */
+        .unit-name-cell > img + * {
+            display: block;
+            margin-top: 10px;
+            font-size: 1.5em; 
+            color: var(--color-primary);
+        }
+
+
+        .unit-position-cell {
+             /* 主要描述內容靠左對齊 */
+             text-align: left; 
+             padding-left: 30px; 
+             font-size: 1.1em; 
+             color: #444;
+             vertical-align: middle; 
+        }
+        
+        /* 修正 2: 讓第一個段落（定位行）置中 */
+        .unit-position-cell p:first-child {
+             text-align: center;
+             font-weight: bold; /* 讓「定位」更突出 */
+             margin-bottom: 10px; /* 增加與描述文字的間隔 */
+        }
+
+        /* 稀有度顏色標籤 (略) */
+        .rarity-mythic { color: #FFD700; font-weight: bold; }
+        .rarity-legendary { color: #FF4500; font-weight: bold; }
+        .rarity-epic { color: #9932CC; font-weight: bold; }
+        .rarity-rare { color: #1E90FF; font-weight: bold; }
+        .rarity-common { color: #3CB371; font-weight: bold; }
+
+        /* 錨點導航樣式 (略) */
+        .rarity-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: #eef;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+        .rarity-nav a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .rarity-nav a:hover {
+            background-color: #ddd;
+        }
+
+        /* 響應式優化：圖片尺寸隨著螢幕變小而縮小 (略) */
+        @media (max-width: 1200px) {
+             .unit-icon {
+                width: 160px; 
+                height: 240px; 
+            }
+        }
+        @media (max-width: 992px) { 
+            .unit-icon {
+                width: 120px; 
+                height: 180px; 
+            }
+            .unit-name-cell {
+                padding: 15px 10px;
+            }
+        }
+        @media (max-width: 768px) {
+            .unit-icon {
+                width: 90px; 
+                height: 135px; 
+            }
+            .unit-name-cell {
+                padding: 10px;
+                font-size: 1.1em;
+            }
+            .unit-position-cell {
+                font-size: 1em;
+                padding-left: 15px;
+            }
+        }
+        /* 針對 600px 以下螢幕的欄位比例優化 (30/70) */
+        @media (max-width: 600px) {
+            .unit-icon {
+                width: 60px;
+                height: 90px; 
+            }
+            .unit-table {
+                min-width: unset; 
+                table-layout: auto;
+            }
+            
+            /* 壓縮名稱/圖片欄位 */
+            .unit-table th:first-child, .unit-table td:first-child {
+                width: 30%; 
+            }
+            /* 擴大說明欄位 */
+            .unit-table th:last-child, .unit-table td:last-child {
+                width: 70%;
+            }
+
+            .unit-name-cell {
+                font-size: 1em;
+                padding: 5px; 
+            }
+             .unit-name-cell > img + * {
+                font-size: 1.1em; 
+            }
+            .unit-position-cell {
+                font-size: 0.9em;
+                padding-left: 10px; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="breadcrumb">
+            <a href="../index.html">🏠 首頁</a> / 士兵介紹
+        </div>
+
+        <div class="hero-section" style="padding: 10px 0 20px;">
+            <h1 class="page-title"⚔️ 士兵介紹 - 作戰單位圖鑑</h1>
+        </div>
+        
+        <hr>
+
+        <div class="content-section">
+            
+            <h2>單位稀有度導覽</h2>
+            <div class="rarity-nav">
+                <a href="#mythic" class="rarity-mythic">神話</a>
+                <a href="#legendary" class="rarity-legendary">傳奇</a>
+                <a href="#epic" class="rarity-epic">史詩</a>
+                <a href="#rare" class="rarity-rare">稀有</a>
+                <a href="#common" class="rarity-common">普通</a>
+            </div>
+
+            <p>本頁面為所有單位的圖鑑，內容按稀有度劃分，所有單位說明為筆者獨立整理，僅供新手參考之用，如有任何不周，請多見諒。</p>
+            
+            <hr>
+            
+            <h2 id="mythic" class="rarity-mythic" style="margin-top: 40px; border-bottom: 2px solid #FFD700; padding-bottom: 5px;">
+                🌟 神話
+            </h2>
+            
+            <div class="unit-table-container">
+                <h3 style="margin-top: 0;">【常駐召喚】</h3>
+                <table class="unit-table">
+                    <thead>
+                        <tr>
+                            <th>單位名稱</th>
+                            <th>說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/knight_king_icon.png" alt="騎士之王" class="unit-icon"> 
+                                騎士之王
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、承受傷害</p>
+                                <p>平民專屬的優秀坦克，騎士之王擁有極高的生命值和高防禦，是專注於戰線維持的堅實肉盾。其技能採用攻擊充能模式，且屬性為「物理」，不受任何屬性克制。由於其出色的高防禦特性，使其與「焰火劍客」並列為當前版本中最推薦的坦克首選之一。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/blaze_swordsman_icon.png" alt="熔火劍客" class="unit-icon"> 
+                                焰火劍客
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、承受傷害</p>
+                                <p>平民專屬的優秀坦克，在0.7.0版本更新中，競技場6等技能變更為了機率回血效果，大幅提升了其續戰能力。與騎士之王相似，他的技能同樣採用攻擊充能模式。不同的是，焰火劍客是火屬性單位，會受到屬性相剋的影響。在協作模式中，他的技能傷害係數比騎士之王高，輸出更強。目前他是打王輸出的三主力之一，尤其擅長對付受火屬性克制的木屬性首領。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/furious_artilleryman_icon.png" alt="狂怒炮手" class="unit-icon"> 
+                                狂怒炮手
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、範圍傷害</p>
+<p>狂怒砲手屬於遊戲早期的群體傷害型神話單位，但其技能設計在現版本節奏中顯得相對落後。由於輸出模式較為呆板、爆發不足，且缺乏明確的戰術價值，因此筆者將其歸類為目前實用性偏低的神話角色之一。
+</p>
+
+<p>
+    不過，由於狂怒砲手屬於常駐召喚池的角色，玩家在日常遊玩時仍然會自然抽到相當數量的碎片。對於無課或微課玩家來說，可選擇的神話本來就不多，因此狂怒砲手依然具備「能上場就先上」的基本價值——畢竟總是個神話，有總比沒有好不是嗎。
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/earth_mage_icon.png" alt="地脈術士" class="unit-icon"> 
+                                地脈術士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、範圍傷害</p>
+                                <p>玻璃大砲，此單位的技能採用時間充能模式，其最大的缺點是開場需要長達16秒才能施放，在節奏快速的PVP競技場中，效果往往不佳且運氣成分高。儘管如此，由於他是常駐召喚神話單位，容易隨著遊戲時間累積而提升等級，且透過過關自動解鎖，因此是每個玩家都擁有並經常使用的單位，在戰場上具有相當高的能見度。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/griffon_knight_icon.png" alt="獅鷲騎士" class="unit-icon"> 
+                                獅鷲騎士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、範圍傷害、控制</p>
+                                <p>獅鷲騎士在定位上屬於副坦兼控制，主要功能是提供小範圍群體傷害與控制。</p>
+                                
+                                <p>該單位的技能採用攻擊充能模式。雖然充能型單位常需搭配「旋律編織者」或「水靈巫師」來加速技能循環，但獅鷲騎士的近戰前排站位使其難以獲得這些後排輔助的增益效果，導致技能釋放頻率偏低。</p>
+                                
+                                <p>部署時，建議將其置於隊伍的側翼或第二層戰線，以降低開場時承受的傷害，提升戰場續航力。</p>
+                                
+                                <p>總結來說，由於他是常駐召喚神話單位，等級會隨時間累積，是新手在缺乏更好選擇時的過渡戰力。他屬於「等級夠了就上場」的常見單位，不具備特殊培養價值，但在戰場上能見度極高。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/storm_maiden_icon.png" alt="風暴聖女" class="unit-icon"> 
+                                風暴聖女
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、範圍傷害、控制</p>
+                                <p>風暴聖女是常駐召喚神話中，平民玩家在缺乏強力群體輸出時一個堪用的選擇。她的技能採攻擊充能觸發，因站位靠後，能與「旋律編織者」或「水靈巫師」等輔助有效配合，透過攻速或充能支援，大幅提升技能釋放頻率，使其群體傷害輸出更上一層樓。</p>
+                                
+                                <p>然而，由於她專注於群體傷害的特性，導致其單體爆發能力不足。這使得她在面對需要集中火力的單體首領戰等場合中，難以與兼具單體與範圍輸出特性的「叢林遊俠」匹敵。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/star_apostle_icon.png" alt="星輝使徒" class="unit-icon"> 
+                                星輝使徒
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、控制、增益</p>
+                                <p>「星輝使徒」於 V0.7.0 版本進行了重大更新，確立了其在隊伍中核心增益單位的地位。</p>
+                                
+                                <p>其 1 等技能採用攻擊充能機制，實測約 5-6 秒觸發一次，持續 3 秒。若能與「水靈巫師」或「旋律編織者」等輔助搭配，可顯著縮短技能間隔，提高增益覆蓋率。</p>
+                                
+                                <p>特別是其 6 等技能具備效果疊加的能力，使其成為改版後戰術組合中不可或缺的強力支援。</p>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+            
+            <div class="unit-table-container">
+                <h3 style="margin-top: 0;">【限定召喚】</h3>
+                <table class="unit-table">
+                    <thead>
+                        <tr>
+                            <th>單位名稱</th>
+                            <th>說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/nine_tailed_fox_icon.png" alt="九尾妖狐" class="unit-icon"> 
+                                九尾妖狐
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、單體傷害、增益</p>
+                               <p>九尾妖狐是現行版本法師神話中的單體傷害天花板，其技能採用時間充能模式，確保了穩定的輸出循環。</p>
+                                
+                                <p>她的用途極為廣泛，幾乎適用於所有戰鬥場景，不論是 PVP 競技場還是 PVE 推進，都能提供強大的單點爆發火力。她同時也是協作模式中打王輸出的三主力之一，狩獵模式中對付「魔花」的主力。</p>
+                                
+                                <p>唯一的例外是她不適合用於無限或需要清理大量敵人的場合，這是所有純單體輸出單位固有的限制。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/poison_assassin_icon.png" alt="毒菇刺客" class="unit-icon"> 
+                                毒菇刺客
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、單體傷害</p>
+                                <p>於 V0.7.4 版本中，毒菇刺客再次獲得修正。他的技能採攻擊充能機制，一旦觸發，會立即閃現至敵方法師身旁，造成高達600%的傷害並附加沉默效果。</p>
+                                
+                                <p>為協作模式中打王輸出的三主力之一，競技場筆者無高等毒菇刺客，不予評論。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/jungle_ranger_icon.png" alt="叢林遊俠" class="unit-icon"> 
+                                叢林遊俠
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、範圍傷害</p>
+                                <p>可被視為強化版的精靈射手，擁有極高的戰場泛用性，是後排輸出中的中流砥柱。</p>
+                                
+                                <p>他的技能採攻擊充能機制觸發，儘管攻擊範圍較小，但與「旋律編織者」或「水靈巫師」等輔助的相性極高。若能同時獲得兩者的增益，將使他的技能釋放頻率與整體輸出傷害獲得顯著提升。</p>
+                                
+                                <p>叢林遊俠適用於絕大多數的戰鬥場合，能夠提供穩定且高效的清場火力支援。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/melody_weaver_icon.png" alt="旋律編織者" class="unit-icon"> 
+                                旋律編織者
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、增益</p>
+                                <p>旋律編織者是隊伍中極為重要的百搭型輔助，其核心價值在於提供大範圍的攻擊速度增益。</p>
+                                
+                                <p>他的技能採用時間充能模式，擁有 10 秒的開場延遲。技能生效範圍約兩格，與「神諭者」7 等級的效果範圍相近。由於攻速提升等同於整體傷害增加，使其成為任何輸出體系都能搭配的強大增益單位。</p>
+                               
+                                <p>特別是當他達到 6 等級後，能夠獲得常駐性提升攻速的被動增益，大幅強化了其輔助價值。因此，旋律編織者在老玩家的戰術配置中，幾乎是不可或缺的核心選擇之一。</p>
+                            </td>
+                        
+                         <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/aqua_wizard_icon.png" alt="水靈巫師" class="unit-icon"> 
+                                水靈巫師
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、增益、控制</p>
+                                <p>水靈巫師的核心技能為大範圍充能支援，觸發時能為友軍提供中等能量（經實測約為 35 能量，數值待確認）。</p>
+                                
+                                <p>他的技能採極短的 2.5 秒時間充能一次。在舊版本中，由於效果只針對「攻擊充能」單位，導致其實用性不如泛用性高的「旋律編織者」，存在較多侷限性。</p>
+                                
+                                <p>然而，經過幾次版本改動後，他的實戰價值顯著提高。除了能有效搭配「冰雪女王」、「重砲先鋒」等高耗能輸出外，與「星輝使徒」、「叢林射手」的組合更是成為核心戰術，使其地位大幅提升。</p>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+
+             <div class="unit-table-container">
+                <h3 style="margin-top: 0;">【轉盤/特殊獲取】</h3>
+                <table class="unit-table">
+                    <thead>
+                        <tr>
+                            <th>單位名稱</th>
+                            <th>說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/barbarian_tyrant_icon.png" alt="蠻族暴君" class="unit-icon"> 
+                                蠻族暴君
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、範圍傷害、承受傷害</p>
+                                <p>0.7.4版本後修改為跳向敵人的射手、法師，並為自己提供防禦增益，筆者沒有，不予評論。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/misty_archer_icon.png" alt="迷霧射手" class="unit-icon"> 
+                                迷霧射手
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、範圍傷害</p>
+                                <p>迷霧射手因其高射速和高技能傷害，是後排輸出中最泛用的存在。</p>
+                                
+                                <p>關鍵技能採「機率施放」模式，戰力表現極度仰賴運氣。若能穩定觸發，將發揮神級戰力；但若運氣不佳，則表現僅略強於叢林射手。</p>
+                                
+                                <p>筆者實測，在最佳走位下，技能若全數命中可造成高達 300%（75% x 4 次）的理論最大傷害。由於技能本身為高傷範圍攻擊，使其對單體或群體敵人都能造成不錯的傷害，關鍵只在於「運氣」。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/ice_queen_icon.png" alt="冰雪女王" class="unit-icon"> 
+                                冰雪女王
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、範圍傷害、控制</p>
+                                <p>
+    冰雪女王是先前版本中的主流神話，但其使用門檻較高，通常需要至少 <strong> 4-5 等級以上</strong> 才能發揮足夠的效益。
+    她的高額先手輸出，在過去的環境中能有效壓制多種前排與脆皮後排，是許多中課以上玩家的優先投資目標之一。
+  </p>
+
+  <p>
+    然而 <strong>2025/12 月光輝戰士推出後</strong>，整體環境產生了顯著變化。
+    光輝戰士具備 <strong>群體護盾</strong>，能在戰局開場時有效吸收冰雪女王的爆發，直接克制她的先手攻擊，使其難以在第一拍打出致命壓制。
+  </p>
+
+  <div class="note">
+    <h3>🔄 兩者之間的「剪刀石頭布」克制循環</h3>
+    <ul>
+      <li><strong>冰雪女王 → 壓制</strong> 多種傳統前排與脆皮隊伍</li>
+      <li><strong>光輝戰士 → 克制</strong> 冰雪女王的爆發輸出</li>
+    </ul>
+    <p class="tip">
+      但由於光輝戰士的護盾範圍相對略小，冰雪女王仍有機會選擇性攻擊未被護盾覆蓋的部位，造成局部突破，並非完全被克制。
+    </p>
+  </div>
+
+  <p>
+    因此，在目前版本中：冰雪女王依然是 <strong>中課以上隊伍非常常見且極具價值的核心輸出選擇</strong>，
+    只是碰到光輝戰士時需要調整站位與搭配；光輝戰士則為強調開場反爆發的關鍵防禦角色。
+  </p>
+
+                                                           </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/war_goddess_icon.png" alt="戰爭女神" class="unit-icon"> 
+                                戰爭女神
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、增益</p>
+                                <p>在 0.7.4 版本後，戰爭女神的技能機制進行了重要調整：由原本的範圍攻擊，改為攻擊充能施放範圍護盾。在技能啟動時，戰爭女神會跳躍至全隊中血量最低的戰士身旁，並於落地後釋放中範圍護盾，大幅提升其保護特定隊友的能力與整體靈活度。</p>
+
+<p>在 PVE 活動中，戰爭女神具有極高的泛用性與價值。尤其在達到6 等級時，能提供高達<strong> 14.82K </strong>的護盾量，大幅增強隊伍的生存能力。特別是在狩獵中，是否擁有戰爭女神會讓隊伍的整體輸出、容錯率產生明顯差距。</p>
+
+<p>
+    在無限的特定關卡中，戰爭女神也能略為提升存活時間，替隊伍拉出更多輸出的空間；而在公會戰的據點攻略，她所提供的護盾能有效提高隊伍生存率，使整體輸出增加。
+</p>
+
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/heavy_artillery_vanguard_icon.png" alt="重砲先鋒" class="unit-icon"> 
+                                重砲先鋒
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、傷害</p>
+                                <p>重砲先鋒的技能在改版前僅限開局一次施放，改版後新增了被動充能的機會，為二次施放創造了可能性。</p>
+                                
+                                <p>然而，要實現二次施放，通常需要搭配至少兩隻「水靈巫師」，但實戰變數過大，且「水靈巫師」獲取難度高，使戰術門檻極高。</p>
+                                
+                                <p>儘管其高達 1000% 的傷害係數極為驚人，但在開局時很容易被前排小兵提前觸發而浪費。此外，其走位高度依賴「水靈巫師」，一旦走位失誤，高額傷害的效益將蕩然無存。</p>
+                                
+                                <p>綜觀而言，重砲先鋒空有高額傷害的美好前景，筆者認為實則是目前轉盤神話單位中實用性最低、操作難度最高的角色。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/dark_moon_empress_icon.png" alt="暗月女皇" class="unit-icon"> 
+                                暗月女皇
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、控制</p>
+                                <p>「暗月女皇」的普通攻擊為單體輸出，但她的核心功能是透過範圍技能來限制敵方後排輸出。</p>
+                                
+                                <p>她的控制效果最高可達 3+1=4 秒。當升級至6等級後，技能冷卻時間將縮短至8秒，一旦成功命中，能夠有效逆轉當前戰局。</p>
+                                
+                                <p>然而，該單位的技能隨機性極大，因此戰術效益的發揮運氣成分占比頗高，使其戰力表現不甚穩定。</p>
+
+                                <p>惟當隊伍進入最後階段的小兵PK，雙方剩餘部隊不多時，這時誰存活更高等級的暗月女皇，將極有可能決定最後的勝敗。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/flame_sovereign_icon.png" alt="烈焰主宰" class="unit-icon"> 
+                                烈焰主宰
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、範圍傷害、增益</p>
+                                <p>烈焰主宰是「巨龍爭鋒」活動專屬的神話單位，部署費用為 10 水費。</p>
+                                
+                                <p>他的核心特色是提供高額的範圍輸出傷害，同時6等級能為隊友帶來 30% 的傷害增益。這項強力的增益特性使他在 PVE 場合中發揮出極高的效益。</p>
+                                
+                                <p>然而，在 PVP 競技場中，由於戰況變化多端，開局約 10 秒敵方前排坦克通常仍存活，導致他的第一次技能往往會浪費在坦克身上，使其 PVP 效益不高，發揮極為仰賴運氣。</p>
+                                
+                                <p>總結來說，烈焰主宰是一位PVE 極具價值、但在 PVP 中表現不穩定的神話角色。</p>
+                            </td>
+                        </tr>
+                        
+                         <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/tidal_lord_icon.png" alt="潮汐領主" class="unit-icon"> 
+                                潮汐領主
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、控制、增益</p>
+                                <p>潮汐領主是「巨龍爭鋒」活動專屬的神話單位，部署費用為 10 水費。</p>
+                                
+                                <p>他的核心特色是鎖定敵方後排的範圍控場兼傷害能力。儘管其技能係數不如「烈焰主宰」那樣具有爆發力，但必定命中後排的特性使其在 PVP 戰鬥中極具價值，幾乎是輸出傷害的保證。</p>
+                                
+                                <p>此外，當他達到 6 等級後，還能為隊友帶來 20% 的攻速增益，提供額外支援。</p>
+                                
+                                <p>惟筆者無潮汐領主，無法實測其PVE的輔助效益，故PVE部分不予評論。</p>
+                            </td>
+                        </tr>
+ <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/Radiant_Warrior_icon.png" alt="光輝戰士" class="unit-icon"> 
+                                光輝戰士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、坦克</p>
+                                <p>光輝戰士的技能為開局立即施放護盾，保護自身<strong>九宮格（周圍 1 格）</strong>內的所有友軍。筆者實測後推估其有效時間約為<strong> 9 秒</strong>，屬於短時間但非常關鍵的保命技能。其設計核心邏輯，即在於反制開局爆發角色，例如冰雪女王與重砲射手等能於開場瞬間造成大量傷害的單位。</p>
+
+<p>由於護盾時效短暫，但對開局存活有極高影響，光輝戰士最適合擺放於<strong>第二排</strong>。這樣能在開場時直接強化第一排坦克，使其更能承受第一波攻擊；同時也能根據敵方布局，擺放於<strong>側翼或後方被包抄常見的位置</strong>，有效提升弱點區塊的生存力。</p>
+
+<p>在 PVE 模式中，光輝戰士也具備實用價值。例如無限特定關卡、公會戰Lv4、Lv5、公會狩獵中，都能透過增加隊伍的存活時間，提高整體輸出，為隊伍創造更多秒數進行輸出循環。</p>
+                            </td>
+                        </tr>
+ <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/mythic/Wood_Spirit_Guard_icon.png" alt="木靈守衛" class="unit-icon"> 
+                                木靈守衛
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、治療</p>
+                                <p>遊戲中唯一的前排坦克，其技能為 <span class="highlight">時間充能型瞬間高治癒</span>。<br>
+    由於技能特性，建議將其放置於 <span class="highlight">中排或後排</span>，以避免開戰時立即被攻擊，造成技能施放前就死亡的窘況。</p>
+
+    <ul>
+        <li><span class="highlight">PVE</span>（狩獵、公會狩獵、公會戰攻城、無限部分關卡）均有良好效果</li>
+        <li><span class="highlight">PVP</span> 因戰場節奏快速，且該坦克較脆皮，發揮難度較高</li>
+    </ul>
+
+    <p>總結來說，此坦克在 <span class="highlight">PVE</span> 場合是非常可靠的支援角色，但在 <span class="highlight">PVP</span> 中需謹慎佈陣，避免過早承受傷害。</p>
+
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+            <br><br><br>
+
+            <h2 id="legendary" class="rarity-legendary" style="margin-top: 40px; border-bottom: 2px solid #FF4500; padding-bottom: 5px;">
+                🔥 傳奇
+            </h2>
+            <div class="unit-table-container">
+                <table class="unit-table">
+                    <thead>
+                        <tr>
+                            <th>單位名稱</th>
+                            <th>說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/legendary/cherry_ronin_icon.png" alt="櫻花浪人" class="unit-icon"> 
+                                櫻花浪人
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、範圍傷害、承受傷害</p>
+                                <p>櫻花浪人是傳奇單位中最堅實的前排，坦度優秀。</p>
+                                
+                                <p>在玩家的神話坦克單位（如騎士之王、焰火劍客）尚未成長到足以承擔戰線時，他就是當仁不讓的最佳過渡期前排首選。</p>
+                            </td>
+                        </tr>
+
+                         <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/legendary/ghost_assassin_icon.png" alt="幽靈刺客" class="unit-icon"> 
+                                幽靈刺客
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、範圍傷害</p>
+                                <p>「幽靈刺客」於 V0.7.0 版本更新後，機制改為開局會立即閃現至敵方後排射手身邊，大幅提升了其戰術多樣性。</p>
+                                
+                                <p>他是一個高風險的單位，主要功能是透過犧牲自己來干擾敵方節奏。部署時需嚴格注意數量控制，因為他飛過去的結局通常是陣亡。若部署過多，反而會因送頭太多而削弱整體戰力。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/legendary/bear_warrior_icon.png" alt="熊靈勇士" class="unit-icon"> 
+                                熊靈勇士
+                            </td>
+                           <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、範圍傷害、控制</p>
+                                
+                                <p>熊靈勇士具備中等射程，站位比法師略短，血量屬於中等水準。</p>
+                                
+                                <p>雖然系統定位為控制，但他有能力在戰鬥中偶爾爆發出高額的群體傷害，玩家在戰鬥結算時會發現他打出驚人的傷害數值。</p>
+                                
+                                <p>綜合其戰力表現，熊靈勇士是現行版本（V0.7.0）中，筆者認為傳奇單位最值得升級至 7 等級的存在。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/legendary/ash_mage_icon.png" alt="灰燼法師" class="unit-icon"> 
+                                灰燼法師
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、範圍傷害</p>
+                                <p>灰燼法師是傳奇單位中的中排輸出，其數值面板與「風語者」幾乎一致。</p>
+                                
+                                <p>兩者之間的主要區別在於：灰燼法師屬於不同屬性，且不具備任何控制效果。因此，在戰術功能上，他屬於較為單純的範圍傷害輸出單位。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/legendary/wind_speaker_icon.png" alt="風語者" class="unit-icon"> 
+                                風語者
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、範圍傷害、控制</p>
+                               <p>風語者是傳奇單位中的中排輸出，其數值面板與「灰燼法師」幾乎一致，兩者主要區別僅在於屬性。</p>
+                                
+                                <p>不過，筆者認為風語者更勝一籌，因為其技能具備聚怪與控制移動的效果。這種戰術功能不僅提供了額外控制，還能優化傷害範圍，使得風語者實際造成的傷害值常常略高於灰燼法師。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/legendary/explosion_dwarf_icon.png" alt="爆破矮人" class="unit-icon"> 
+                                爆破矮人
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、單體傷害、增益</p>
+                                <p>爆破矮人說實在就是弱化版的狂怒砲手，各方面表現更為平庸。技能機制、輸出能力、站位要求都沒有突出的亮點，在現行版本中實用度偏低。</p>
+
+<p>由於其表現與定位都相當尷尬，筆者認為沒有太多值得特別說明之處。除非是前期實在沒有其他更好的替補單位，否則不建議使用。</p>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            
+            <br><br><br>
+
+            <h2 id="epic" class="rarity-epic" style="margin-top: 40px; border-bottom: 2px solid #9932CC; padding-bottom: 5px;">
+                🟣 史詩
+            </h2>
+            <div class="unit-table-container">
+                <table class="unit-table">
+                    <thead>
+                        <tr>
+                            <th>單位名稱</th>
+                            <th>說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/epic/rock_thrower_icon.png" alt="岩石投擲者" class="unit-icon"> 
+                                岩石投擲者
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、控制、承受傷害</p>
+                                <p>該單位在遊戲前期和中期，無論是 PVP 還是 PVE 都非常實用。</p>
+                                
+                                <p>在玩家的傳奇或神話級坦克數量及等級尚未成熟時，他就是不可或缺的前排承傷首選。</p>
+                                
+                                <p>他的重要性會隨著隊伍核心戰力（神話單位）的逐漸成形而降低，是優秀的過渡期坦克。</p>
+                            </td>
+                        </tr>
+                        
+                         <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/epic/flame_mage_icon.png" alt="火焰法師" class="unit-icon"> 
+                                火焰法師
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、單體傷害</p>
+                                <p>火焰法師在遊戲後期是針對單體敵人輸出的強力選擇，特別適用於狩獵模式中的「魔花」戰鬥，以及其他單體首領戰。</p>
+                                
+                                <p>雖然他的單體輸出能力極強，但由於是複數小兵單位（HP 較低），仍有「皮薄易陣亡」的問題。若前排能有效穩住戰線，確保其生存，他的單體火力將非常可觀。</p>
+                                
+                                <p>建議玩家至少保留一定數量的 6 等級火焰法師，作為在傳奇或神話單位尚未成形時，挑戰狩獵的首要輸出主力。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/epic/snowman_warrior_icon.png" alt="雪人戰士" class="unit-icon"> 
+                                雪人戰士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、範圍傷害、控制</p>
+                                <p>雪人戰士的戰場價值較為不明確。雖然具備牽制敵方的能力，但在史詩單位中，其綜合表現並不突出。</p>
+                                
+                                <p>由於定位模糊，他既無法提供高額傷害輸出，也無法承受足夠的傷害。相比之下，玩家通常更傾向於選擇傷害更高的「毒藥大師」。</p>
+                                
+                                <p>總體而言，筆者認為他是史詩士兵中實用性最低的單位之一，在戰場上幾乎被忽略。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/epic/poison_master_icon.png" alt="毒藥大師" class="unit-icon"> 
+                                毒藥大師
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、範圍傷害</p>
+                                <p>毒藥大師在 PVP 和 PVE 均表現優異的史詩級單位。</p>
+                                
+                                <p>他是 PVE 無限戰爭 模式中不可或缺的輸出，在 PVP 中也可根據隊伍配置靈活上場。</p>
+                                
+                                <p>由於毒藥大師的戰術價值極高，建議玩家務必保留並升級一定數量的 6 等級毒藥大師，每一隻都非常珍貴。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/epic/oracle_icon.png" alt="神諭者" class="unit-icon"> 
+                                神諭者
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、增益</p>
+                                <p>神諭者為 PVP 和 PVE 中都屬於必備輔助。</p>
+                                
+                                <p>在0.7.0更新中，神諭的效果遭受了大幅削弱，其增益目前僅能同時疊加 20 次。</p>
+                                
+                                <p>舉例來說，如果一隊 7 等級的神諭者有 9 名士兵，被增益的友軍如果完全處於這 9 名士兵的增益範圍內，疊加次數會計算為 9 次。這意味著一個部隊最多只能同時受到「兩隊多一些」的神諭者增益效果影響。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/epic/royal_archer_icon.png" alt="皇家弓箭手" class="unit-icon"> 
+                                皇家弓箭手
+                            </td>
+                            <td class="unit-position-cell">
+                            <p><strong>定位：：</strong> 後排、單體傷害、增益</p>
+
+                           <p>皇家弓箭手為轉盤限定的稀有史詩單位，在面對BOSS戰時的實戰價值極高。</p>
+
+                               <p>其最大優勢在於遠程弓箭手的站位特性，通常處於隊伍後排，不容易被 BOSS 的大型範圍技能波及，因此相較於定位相近、但更容易被波及的火焰法師，皇家弓箭手在許多 PVE 戰鬥中能活得更久、打得更多。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/epic/wood_wizard_icon.png" alt="木頭巫師" class="unit-icon"> 
+                                木頭巫師
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、群體治療</p>
+                                <p>轉盤限定稀有士兵，版本少數的治癒單位，好用，建議累積至兩個5+5等級會比單一個6級好用，通常放置於隊伍中間，可以最大幅度的治癒友軍</p>
+
+                                <p>另在PVE中，也可考慮放在最前排，坦克放在第二排，透過走位運作，將有機會治癒到前排坦克(但不一定，得看實際戰況變化，也有可能補不到)。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/epic/pumpkin_guard_icon.png" alt="南瓜守衛" class="unit-icon"> 
+                                南瓜守衛
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、承受傷害、控制</p>
+                                <p>於 0.6.9 版本出現的史詩單位，可被視為傳奇單位「櫻花浪人」的優良平替品。</p>
+                                
+                                <p>由於屬於史詩稀有度，他具有容易蒐集、輕鬆升級至 6 等級的優勢。因此，在傳奇「櫻花浪人」的數量或等級尚未充足前，他是極佳的過渡期替代者。</p>
+                                
+                                <p>儘管表現出色，但他因為具備特定屬性，在面對屬性相剋的敵人時，存在被克制的風險。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/epic/dwarf_berserker_icon.png" alt="矮人狂戰士" class="unit-icon"> 
+                                矮人狂戰士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、範圍傷害、增益</p>
+                                <p>尚未實裝。</p>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <br><br><br>
+
+            <h2 id="rare" class="rarity-rare" style="margin-top: 40px; border-bottom: 2px solid #1E90FF; padding-bottom: 5px;">
+                💧 稀有
+            </h2>
+            <div class="unit-table-container">
+                <table class="unit-table">
+                    <thead>
+                        <tr>
+                            <th>單位名稱</th>
+                            <th>說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/heavy_sledgehammer_guard_icon.png" alt="重錘衛士" class="unit-icon"> 
+                                重錘衛士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、範圍傷害、承受傷害</p>
+                                <p>重錘衛士屬於典型的過渡期前排單位，主要在遊戲新手階段和中期隊伍尚未成形時才會使用。</p>
+                                
+                                <p>隨著玩家的神話和傳奇單位逐漸到位，他的實用性會大幅降低。在遊戲後期，除非是剛好需要 4 水費來補足部署數量或進行特定卡位，否則他很少會被納入戰鬥隊伍。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/goblin_warrior_icon.png" alt="哥布林戰士" class="unit-icon"> 
+                                哥布林戰士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、單體傷害、增益</p>
+                                <p>哥布林戰士屬於典型的低費過渡單位，其作用僅限於遊戲新手階段和隊伍成形前的過渡時期。</p>
+                                
+                                <p>隨著玩家的神話、傳奇單位逐漸到位，該單位的戰力會明顯不足，因此在遊戲中後期，他不太可能被納入實戰隊伍。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/forest_scout_icon.png" alt="林地斥候" class="unit-icon"> 
+                                林地斥候
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、單體傷害</p>
+                                <p>林地斥侯屬於典型的過渡期輸出單位，主要用於遊戲新手階段和中期隊伍尚未完全成形時。</p>
+                                
+                                <p>該單位作為中期後排輸出時表現良好，當數量眾多時，其傷害累積起來也相當可觀。不過，隨著遊戲進入後期，除非是剛好需要 4 水費來補足部署數量或進行特定卡位，否則他很少會被納入戰鬥隊伍。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/apprentice_mage_icon.png" alt="見習法師" class="unit-icon"> 
+                                見習法師
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、傷害</p>
+                                <p>見習法師屬於典型的過渡期輸出單位，主要用於遊戲新手階段和中期隊伍尚未完全成形時。</p>
+                                
+                                <p>該單位作為中期後排輸出時表現良好，當數量眾多時，其傷害累積起來也相當可觀。在遊戲後期，他只有在狩獵模式中針對「魔花」，或剛好需要 4 水費來補足部署數量或進行特定卡位時，才會被考慮使用。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/berserker_icon.png" alt="狂戰士" class="unit-icon"> 
+                                狂戰士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、範圍傷害、控制</p>
+                                <p>狂戰士屬於典型的低費過渡單位，其作用僅限於遊戲新手階段和隊伍成形前的過渡時期。</p>
+                                
+                                <p>隨著玩家的神話、傳奇單位逐漸到位，該單位的戰力會明顯不足，因此在遊戲中後期，他不太可能被納入實戰隊伍。</p>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/bomber_icon.png" alt="炸彈兵" class="unit-icon"> 
+                                炸彈兵
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、範圍傷害、控制</p>
+                                <p>炸彈兵是轉盤限定的稀有士兵，獲取方式僅限透過轉盤抽取。</p>
+                                
+                                <p>他的戰術定位極為明確：他是「炸彈隊」戰術的雙主角之一。因此，他只在 PVP 競技場中發揮作用，並且幾乎專屬於該體系。</p>
+                                
+                                <p>憑藉其獨特的機制，炸彈隊在競技場中具備極高的威脅性，是一個讓對手感到極度棘手的單位。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/goblin_shaman_icon.png" alt="哥布林薩滿" class="unit-icon"> 
+                                哥布林薩滿
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 中排、群體治療</p>
+                                <p>版本少數的治癒單位，但因其群體小兵特性，容易被範圍攻擊秒殺，故上場價值不高，剛好缺3水費時可考慮。。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/goblin_chef_icon.png" alt="哥布林大廚" class="unit-icon"> 
+                                哥布林大廚
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、控制、承受傷害</p>
+                                <p>該單位是轉盤限定的稀有士兵，在 4 水費單位中擁有最厚的單一血量。</p>
+                                
+                                <p>在核心隊伍尚未完全成形時，他是一個稱職的副坦克角色。不過，他屬於轉盤的附屬產物，玩家不必為了他特地抽取。</p>
+                                
+                                <p>雖然上場表現不俗，但由於有多個單位可以取代其功能，即使沒有這個角色，也能透過其他單位彌補。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/gale_wolf_icon.png" alt="疾風狼" class="unit-icon"> 
+                                疾風狼
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、單體傷害、增益</p>
+                                <p>該單位為轉盤限定的稀有士兵，獲取方式受限。</p>
+                                
+                                <p>筆者認為，在 V0.7.0 版本中，該單位的戰術價值極低，功能性不強，實戰表現不佳，因此被評為實用性極差的單位。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/aegis_soldier_icon.png" alt="神盾士兵" class="unit-icon"> 
+                                神盾士兵
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、承受傷害、護盾</p>
+                                <p>神盾士兵是於 V0.7.2 版本左右新增的單位。</p>
+                                
+                                <p>他僅需 3 水費的低廉成本，卻擁有不錯的防禦能力，使其成為隊伍在過渡時期一個極具性價比的優質前排選擇。</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/rare/canon_chariot_icon.png" alt="加農戰車" class="unit-icon"> 
+                                加農戰車
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、範圍傷害</p>
+                                <p>尚未實裝。</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                </table>
+            </div>
+
+            <br><br><br>
+            
+            <h2 id="common" class="rarity-common" style="margin-top: 40px; border-bottom: 2px solid #3CB371; padding-bottom: 5px;">
+                🟢 普通
+            </h2>
+            <div class="unit-table-container">
+                <table class="unit-table">
+                    <thead>
+                        <tr>
+                            <th>單位名稱</th>
+                            <th>說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/common/flintlock_shooter_icon.png" alt="火槍手" class="unit-icon"> 
+                                火槍手
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、單體傷害</p>
+                                <p>該單位屬於典型的低稀有度過渡單位，其作用僅限於遊戲新手階段。</p>
+                                
+                                <p>隨著玩家的神話、傳奇單位逐漸到位，該單位的戰力會明顯不足，因此在遊戲中後期，他不太可能被納入實戰隊伍。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/common/archer_icon.png" alt="弓箭手" class="unit-icon"> 
+                                弓箭手
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、單體傷害</p>
+                                 <p>該單位屬於典型的低稀有度過渡單位，其作用僅限於遊戲新手階段。</p>
+                                
+                                <p>隨著玩家的神話、傳奇單位逐漸到位，該單位的戰力會明顯不足，因此在遊戲中後期，他不太可能被納入實戰隊伍。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/common/snowball_thrower_icon.png" alt="雪球投擲手" class="unit-icon"> 
+                                雪球投擲手
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 後排、控制</p>
+                                 <p>該單位屬於典型的低稀有度過渡單位，其作用僅限於遊戲新手階段。</p>
+                                
+                                <p>隨著玩家的神話、傳奇單位逐漸到位，該單位的戰力會明顯不足，因此在遊戲中後期，他不太可能被納入實戰隊伍。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/common/swordsman_icon.png" alt="劍士" class="unit-icon"> 
+                                劍士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、範圍傷害、承受傷害</p>
+                                 <p>該單位屬於典型的低稀有度過渡單位，其作用僅限於遊戲新手階段。</p>
+                                
+                                <p>隨著玩家的神話、傳奇單位逐漸到位，該單位的戰力會明顯不足，因此在遊戲中後期，他不太可能被納入實戰隊伍。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/common/bomber_icon.png" alt="炸彈客" class="unit-icon"> 
+                                炸彈客
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、控制</p>
+                                 <p>該單位屬於典型的低稀有度過渡單位，其作用僅限於遊戲新手階段。</p>
+                                
+                                <p>隨著玩家的神話、傳奇單位逐漸到位，該單位的戰力會明顯不足，因此在遊戲中後期，他不太可能被納入實戰隊伍。</p>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="unit-name-cell">
+                                <img src="images/common/wooden_shield_guard_icon.png" alt="木盾衛士" class="unit-icon"> 
+                                木盾衛士
+                            </td>
+                            <td class="unit-position-cell">
+                                <p><strong>定位：</strong> 前排、承受傷害、控制</p>
+                                 <p>該單位屬於典型的低稀有度過渡單位，其作用僅限於遊戲新手階段。</p>
+                                
+                                <p>隨著玩家的神話、傳奇單位逐漸到位，該單位的戰力會明顯不足，因此在遊戲中後期，他不太可能被納入實戰隊伍。</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+<p class="update-info">
+        © 萌新軍本部 製作<br>
+    </p>
+    </div>
+    
+
+
+    <script src="../assets/js/app.js"></script>
+</body>
+</html>

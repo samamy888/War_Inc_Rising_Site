@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>War Inc Rising - 非官方資料站</title>
+    <link rel="stylesheet" href="assets/css/style.css"> 
+    <style>
+        /* 新增的響應式修正 */
+        
+        /* 1. 確保 Logo 在任何螢幕上都不會溢出 */
+        .game-logo {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* 2. 確保容器內容有邊距，並正確處理寬度 */
+        .container {
+            padding-left: 15px; /* 在手機上增加左右內邊距 */
+            padding-right: 15px;
+            box-sizing: border-box; /* 確保 padding 不會增加總寬度 */
+        }
+        
+        /* 3. 修正導覽卡片在小螢幕上的佈局 */
+        @media (max-width: 600px) {
+            .guide-cards a.card-link {
+                width: 100%; /* 在手機上讓每個卡片佔滿一行 */
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+
+        <div class="hero-section">
+            <img src="assets/images/War Inc Rising Logo.webp" alt="War Inc Rising Logo" class="game-logo">
+            <h1>歡迎來到 War Inc Rising <span class="not-official">非</span>官方資料站</h1>
+        </div>
+        
+        <hr>
+
+        <div class="recruitment-jumbotron">
+            <h2>✨ [萌新軍本部] 招募</h2>
+            
+            <p>我們是一群熱衷於 <strong>War Inc Rising</strong> 的 (繁/簡)中文玩家，歡迎所有對遊戲有愛的玩家加入我們！</p>
+            
+            <p>透過我們的 <strong>Discord</strong> 討論區，您可以獲得即時的技術交流、戰術指導，以及與夥伴共同合作的樂趣。我們樂於手把手教導新人，共同成長！</p>
+            
+            <p>為了維持公會的頂尖競爭力，<strong>主公會</strong> 現正積極徵求 <strong>5400</strong> 分以上、且具備高度活躍和積極性的頂尖玩家！另設<strong>分公會</strong>，招收條件為雖未滿5400分但<strong>自認為是積極、高度活躍的國戰型態玩家</strong>或者<strong>高潛力新玩家</strong>，另公會Discord公開開放給所有想要交流的中文玩家加入，提供一個良好正向的中文討論頻道！</p>
+            
+            <div class="recruitment-button-group">
+                <a href="guides/guild_application.html" class="recruitment-button">
+                    🌐 公會申請教學 (附圖)
+                </a>
+                <a href="https://discord.gg/UKgG3CxsZD" class="recruitment-button" target="_blank">
+                    💬 加入 Discord 討論區
+                </a>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2 style="font-size: 1.6em;">🚀 導覽</h2>
+        <p style="font-size: 1.15em;">點擊下方卡片，快速進入您感興趣的資料頁面。</p>
+        
+        <div class="guide-cards">
+            
+            <a href="buildings/building_list.html" class="card-link">
+                <div class="card-item building-card">
+                    <h3 style="font-size: 1.4em;">建築</h3>
+                    <p style="font-size: 1.15em;">建築物基本介紹</p>
+                </div>
+            </a>
+
+            <a href="units/troops_introduction.html" class="card-link">
+                <div class="card-item unit-card">
+                    <h3 style="font-size: 1.4em;">士兵介紹</h3>
+                    <p style="font-size: 1.15em;">單位基本介紹</p>
+                </div>
+            </a>
+
+            <a href="modes/modes_list.html" class="card-link">
+                <div class="card-item mode-card">
+                    <h3 style="font-size: 1.4em;">遊戲模式</h3>
+                    <p style="font-size: 1.15em;">模式基本介紹</p>
+                </div>
+            </a>
+
+            <a href="tutorials/tutorial_main.html" class="card-link"> 
+                <div class="card-item guide-card">
+                    <h3 style="font-size: 1.4em;">綜合攻略</h3>
+                    <p style="font-size: 1.15em;">持續更新中</p>
+                </div>
+            </a>
+            </div> 
+        
+        <hr>
+
+        <div class="note" style="margin-top: 20px;">
+            <strong>免責聲明：</strong> 本網站為玩家自製的非官方資料站，所有數據和資訊以遊戲內實際內容為準。
+        </div>
+
+    </div> <p class="update-info">
+        © 版權所有，請勿盜用<br>
+        內容更新時間：2026/01/04    </p>
+    
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

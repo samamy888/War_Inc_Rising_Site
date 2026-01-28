@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建築總覽</title>
+    <link rel="stylesheet" href="../assets/css/style.css"> 
+    <style>
+        /* 針對單頁式詳細內容的樣式 */
+        .building-detail-section {
+            margin-bottom: 50px;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        /* 針對複合區塊的子項目設定 */
+        .sub-building-detail {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+        }
+        .detail-layout {
+            display: flex; 
+            gap: 40px; 
+            align-items: flex-start;
+        }
+        .detail-layout .image-display {
+            flex-shrink: 0;
+            max-width: 400px; 
+            width: 100%;
+        }
+        .detail-layout .detail-image {
+            max-width: 350px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%; 
+        }
+
+        /* === 手機響應式優化 (Mobile Responsive Fix) === */
+        @media (max-width: 768px) {
+            .detail-layout {
+                flex-direction: column; 
+                gap: 20px;
+            }
+            .detail-layout .image-display {
+                max-width: 100%; 
+                text-align: center; 
+            }
+            .detail-layout .detail-image {
+                max-width: 80%; 
+                height: auto !important; 
+            }
+            .building-detail-section {
+                padding: 15px; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="breadcrumb">
+            <a href="../index.html">🏠 首頁</a> / 建築
+        </div>
+
+        <div class="hero-section" style="padding: 10px 0 20px;">
+            <h1 class="page-title">🏗️ 建築</h1>
+        </div>
+        
+        <hr>
+
+        <div class="content-section">
+            
+            <h2>建築總覽</h2>
+            
+            <div class="building-detail-section">
+                <h2 style="margin-top: 0;">🏯 指揮所</h2>
+                
+                <div class="detail-layout">
+                    
+                    <div class="image-display">
+                        <img src="images/command_post_detail.png" alt="指揮所 Lv.5 介面截圖" class="detail-image">
+                    </div>
+                    
+                </div>
+
+                <h3 style="margin-top: 40px;">說明</h3>
+                <p>指揮所是村莊的核心建築。所有其他建築物的等級上限，皆取決於指揮所的等級。升級至 2 至 3 級相對簡單；但升級至 4 級需要 5 個不同的傳奇單位，升級至 5 級則需要 5 個不同的神話單位。</p>
+            </div>
+
+            <hr style="margin: 50px 0;">
+
+            <div class="building-detail-section">
+                <h2 style="margin-top: 0;">🧪 法術魔鍋</h2>
+                
+                <div class="detail-layout">
+                    
+                    <div class="image-display">
+                        <img src="images/magic_cauldron_detail.png" alt="法術魔鍋 Lv.5 介面截圖" class="detail-image">
+                    </div>
+                    
+                </div>
+
+                <h3 style="margin-top: 40px;">說明</h3>
+                <p>法術魔鍋的主要功能是解鎖競技場法術，並擴大戰鬥攜帶與研製上限。其中，治癒術會在升級至 2 級時解鎖，火球術則會在升級至 4 級時解鎖。此外，從 2 級升級至 5 級的每個等級，都會使法術的單次戰鬥攜帶量增加 1 點，同時研製上限量增加 2 點。</p>
+            </div>
+
+            <hr style="margin: 50px 0;">
+
+            <div class="building-detail-section">
+                <h2 style="margin-top: 0;">🍄 隨從營地</h2>
+                
+                <div class="detail-layout">
+                    
+                    <div class="image-display">
+                        <img src="images/minion_camp_detail.png" alt="隨從營地 Lv.5 介面截圖" class="detail-image">
+                    </div>
+                    
+                </div>
+
+                <h3 style="margin-top: 40px;">說明</h3>
+                <p>隨從營地目前因隨從系統尚未完全開放，升級優先度較低。建議在木頭資源充裕時再進行升級。</p>
+            </div>
+            
+            <hr style="margin: 50px 0;">
+
+            <div class="building-detail-section">
+                <h2 style="margin-top: 0;">🌲 伐木場</h2>
+                
+                <div class="detail-layout">
+                    
+                    <div class="image-display">
+                        <img src="images/lumber_yard_detail.png" alt="伐木場 Lv.5 介面截圖" class="detail-image">
+                    </div>
+                    
+                </div>
+
+                <h3 style="margin-top: 40px;">說明</h3>
+                <p>作為基礎資源建築，建議僅在指揮所或其前置建築要求升級時，再進行對應等級的提升。</p>
+            </div>
+
+            <hr style="margin: 50px 0;">
+
+            <div class="building-detail-section">
+                <h2 style="margin-top: 0;">💰 金礦</h2>
+                
+                <div class="detail-layout">
+                    
+                    <div class="image-display">
+                        <img src="images/gold_mine_detail.png" alt="金礦 Lv.5 介面截圖" class="detail-image">
+                    </div>
+                    
+                </div>
+
+                <h3 style="margin-top: 40px;">說明</h3>
+                <p>作為基礎資源建築，建議僅在指揮所或其前置建築要求升級時，再進行對應等級的提升。</p>
+            </div>
+
+            <hr style="margin: 50px 0;">
+
+            <div class="building-detail-section">
+                <h2 style="margin-top: 0;">⚙️ 新版本資源建築</h2>
+                
+                <div class="sub-building-detail">
+                    <h3 style="margin-top: 0;">木頭採集廠</h3>
+                    <div class="detail-layout">
+                        <div class="image-display">
+                            <img src="images/wood_collector_detail.jpg" alt="木頭採集廠介面截圖" class="detail-image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-building-detail">
+                    <h3 style="margin-top: 0;">石頭採集廠</h3>
+                    <div class="detail-layout">
+                        <div class="image-display">
+                            <img src="images/stone_collector_detail.jpg" alt="石頭採集廠介面截圖" class="detail-image">
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">說明</h3>
+                <p>此為遊戲最新開放的資源建築類型。目前相關的升級數據、資源效率與機制仍在持續研究與收集中。</p>
+            </div>
+
+        </div>
+<p class="update-info">
+        © 萌新軍本部 製作<br>
+    </p>
+    </div>
+    
+    <script src="../assets/js/app.js"></script>
+</body>
+</html>

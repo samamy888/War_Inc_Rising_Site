@@ -1,0 +1,360 @@
+/* * 檔案: style.css
+ * 描述: War Inc Rising 網站主要樣式表 (最終藍色配色與排版修正)
+ */
+
+/* ==================================== */
+/* 通用修正：確保 Padding 和 Border 不會撐開元素總寬度 */
+/* ==================================== */
+* {
+    box-sizing: border-box; 
+}
+
+/* ==================================== */
+/* CSS 變數：藍色主題配色方案 */
+/* ==================================== */
+:root {
+    /* 🚀 新配色 1: 主色改為沉穩深藍色 */
+    --color-primary: #004e92;      
+    /* 🚀 新配色 2: 輔助色改為柔和天空藍 */
+    --color-accent: #87bfff;       
+    --color-secondary: #333399;    /* 次要色：深藍色 (保持不變) */
+    --color-background-main: #f9f9f9; /* 主背景：極淺灰 */
+    /* 🚀 新配色 3: 卡片細節背景改為極淺雲朵藍 */
+    --color-background-card: #f0f6f9; 
+    --color-text-main: #333;       
+}
+
+/* ==================================== */
+/* 基礎樣式與手機友善設定 */
+/* ==================================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0; 
+    background-color: var(--color-background-main); 
+    color: var(--color-text-main);
+    line-height: 1.6;
+}
+
+.container {
+    /* 💥 這是強制置中的關鍵修正！ */
+    display: block; 
+    width: 100%; 
+    max-width: 900px; 
+    margin: auto;
+    background: #fff;
+    padding: 20px 15px; 
+    box-shadow: none;
+}
+
+/* ==================================== */
+/* 標題與分隔線樣式 (後續內容保持不變) */
+/* ==================================== */
+.hero-section {
+    text-align: center;
+    padding: 20px 0;
+}
+h1 {
+    color: var(--color-primary); 
+    text-align: center;
+    border-bottom: 3px solid var(--color-primary);
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    font-size: clamp(1.6em, 5vw, 2.2em); 
+}
+
+h1 .not-official {
+    font-size: 1.2em; 
+    color: var(--color-accent); 
+    font-weight: 900; 
+    padding: 0 4px; 
+    display: inline-block; 
+}
+
+/* 頁面底部資訊排版 */
+.update-info {
+    font-size: 0.75em; 
+    color: #aaa; 
+    text-align: right; 
+    padding: 20px 15px;
+    margin-top: 30px; 
+    margin-left: auto; 
+    margin-right: auto;
+    max-width: 900px; 
+}
+
+h2 {
+    color: var(--color-secondary); 
+    margin-top: 25px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #ddd;
+    font-size: 1.4em;
+}
+h3 {
+    color: var(--color-accent); 
+    margin-top: 15px;
+    font-size: 1.2em;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 78, 146, 0.75), rgba(0, 0, 0, 0)); 
+    margin: 30px 0;
+}
+
+
+/* ==================================== */
+/* 遊戲圖標樣式 */
+/* ==================================== */
+.game-logo {
+    width: 100px; 
+    height: 100px;
+    border-radius: 20%; 
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+
+/* ==================================== */
+/* 擴大的招募區塊 (Jumbotron) 樣式 */
+/* ==================================== */
+.recruitment-jumbotron {
+    background-color: #f5faff; 
+    border: 3px solid var(--color-primary); 
+    border-radius: 10px;
+    padding: 25px;
+    text-align: center;
+    margin: 30px 0;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.recruitment-jumbotron h2 {
+    color: var(--color-primary);
+    margin-top: 0;
+    font-size: 1.6em;
+    border-bottom: none;
+}
+
+.recruitment-jumbotron p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.recruitment-button-group {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+
+.recruitment-button {
+    display: block; 
+    background-color: var(--color-accent); 
+    color: white;
+    padding: 12px 25px;
+    margin-top: 10px; 
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: background-color 0.2s, transform 0.2s;
+    width: 90%; 
+    max-width: 300px;
+    text-align: center;
+}
+
+.recruitment-button:hover {
+    background-color: #61a4f0; 
+    transform: scale(1.05);
+}
+
+
+/* ==================================== */
+/* 圖片與技能區塊佈局 */
+/* ==================================== */
+.image-container {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.image-container img {
+    max-width: 100%; 
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.skill-section {
+    display: block; 
+    margin-bottom: 20px;
+}
+
+.skill-info {
+    width: 100%; 
+    margin-bottom: 15px;
+}
+
+.skill-screenshot {
+    width: 100%; 
+    text-align: center; 
+}
+
+.skill-screenshot img {
+    width: 90%; 
+    max-width: 350px; 
+    border: 2px solid var(--color-accent);
+    border-radius: 6px;
+}
+
+
+/* ==================================== */
+/* 表格與提示框樣式 */
+/* ==================================== */
+.skill-detail, .stats-table {
+    background-color: var(--color-background-card); 
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.stats-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.95em; 
+}
+
+.stats-table th, .stats-table td {
+    border: 1px solid var(--color-accent);
+    padding: 8px;
+    text-align: left;
+}
+
+.stats-table th {
+    background-color: var(--color-accent);
+    color: white;
+}
+
+.note {
+    background-color: #e0f7fa;
+    border-left: 5px solid #00bcd4; 
+    padding: 8px;
+    margin-top: 10px;
+    font-style: italic;
+    color: #333;
+}
+
+ul {
+    list-style: disc;
+    padding-left: 20px;
+}
+
+/* ==================================== */
+/* 首頁導覽卡片樣式 */
+/* ==================================== */
+.guide-cards {
+    display: flex;
+    flex-direction: column; 
+    gap: 15px; 
+    margin-top: 20px;
+}
+
+.card-link {
+    text-decoration: none; 
+    color: inherit;
+    width: 100%; 
+    min-width: 100%;
+}
+
+.card-item {
+    padding: 15px;
+    border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: left; 
+}
+
+.card-item h3 {
+    margin-top: 0;
+    color: var(--color-secondary);
+}
+
+.card-item p {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.card-item:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.character-card { background-color: var(--color-background-card); border-left: 5px solid var(--color-primary); } 
+.unit-card { background-color: var(--color-background-card); border-left: 5px solid var(--color-secondary); } 
+.building-card { background-color: var(--color-background-card); border-left: 5px solid var(--color-accent); } 
+.mode-card { background-color: var(--color-background-card); border-left: 5px solid #4caf50; } 
+.guide-card { background-color: var(--color-background-card); border-left: 5px solid var(--color-accent); } 
+
+
+/* ==================================== */
+/* 響應式設計 */
+/* ==================================== */
+@media (min-width: 600px) {
+    /* 技能區塊 */
+    .skill-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; 
+        gap: 30px;
+    }
+
+    .skill-info {
+        width: 60%; 
+        margin-bottom: 0;
+    }
+
+    .skill-screenshot {
+        width: 40%; 
+        text-align: right; 
+        order: 2; 
+    }
+    
+    .skill-screenshot img {
+        width: 100%; 
+        max-width: none; 
+    }
+
+    /* 按鈕排版：並排顯示 */
+    .recruitment-button-group {
+        flex-direction: row; 
+        justify-content: center;
+        gap: 20px; 
+    }
+    
+    .recruitment-button {
+        width: auto;
+        margin-top: 0;
+    }
+    
+    /* 修正：導覽卡片兩列顯示 */
+    .guide-cards {
+        flex-direction: row; 
+        flex-wrap: wrap;
+        justify-content: flex-start; 
+        margin-left: -10px; 
+        margin-right: -10px; 
+    }
+    
+    .card-link {
+        width: calc(50% - 20px); 
+        margin: 10px; 
+        box-sizing: border-box; 
+    }
+}
+
+@media (min-width: 900px) {
+    /* 修正：導覽卡片三列顯示 */
+    .card-link {
+        width: calc(33.333% - 20px); 
+    }
+}

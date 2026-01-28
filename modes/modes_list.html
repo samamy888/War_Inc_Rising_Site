@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>遊戲模式</title>
+    <link rel="stylesheet" href="../assets/css/style.css"> 
+    <style>
+    /* 頁面專屬樣式，確保模式區塊正確顯示 */
+    
+    /* 1. 表格響應式修正：移除橫向滾動 */
+    .stats-table-container {
+        /* 移除原有的 overflow-x: auto; 以防止滑動 */
+        /* 若仍有滑動，可以明確設定為 hidden */
+        overflow-x: hidden; 
+        -webkit-overflow-scrolling: touch; 
+    }
+    
+    /* 🚀 關鍵修正：強制表格佈局並移除最小寬度限制 */
+    .stats-table table {
+        /* 移除 min-width: 350px; */
+        width: 100%; 
+        table-layout: fixed; /* 確保列寬設定生效 */
+    }
+    
+    /* 🚀 關鍵修正：定義兩欄寬度比例，解決文字擠壓和串聯問題 */
+    .stats-table th:first-child, .stats-table td:first-child {
+        width: 30%; /* 「特色」欄位佔 30% */
+        word-break: break-all; /* 確保長標題能斷行 */
+    }
+    .stats-table th:last-child, .stats-table td:last-child {
+        width: 70%; /* 「說明」欄位佔 70% */
+        word-break: break-word; /* 確保長描述能斷行 */
+    }
+
+    /* 2. 模式區塊主樣式 */
+    .mode-detail-section {
+        margin-bottom: 30px;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9; 
+    }
+    
+    /* 3. 標題樣式覆蓋 */
+    .mode-detail-section h2 {
+        color: var(--color-primary); 
+        margin-top: 0; 
+        margin-bottom: 15px; 
+        padding-bottom: 0; 
+        border-bottom: none; 
+        font-size: 1.8em; 
+    }
+</style>
+</head>
+<body>
+    
+    <div class="container">
+        
+        <div class="breadcrumb">
+            <a href="../index.html">🏠 首頁</a> / 遊戲模式清單
+        </div>
+
+        <div class="hero-section" style="padding: 10px 0 20px;">
+            <h1 class="page-title">🕹️ 遊戲模式</h1>
+        </div>
+        
+        <hr>
+
+        <div class="content-section">
+            
+            
+            <div class="mode-detail-section">
+                <h2>🤝 協作模式</h2>
+                
+                <p>協作模式是遊戲內建的合作塔防。此模式直接套用玩家培養的士兵等級，因此士兵等級是影響通關難度的核心因素，等級越高，不僅容錯率大幅提升，挑戰更高波次的成功率也會增加。</p>
+                
+                <div class="stats-table-container">
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>特色</th>
+                                    <th>說明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>對戰形式</td>
+                                    <td>塔防合作</td>
+                                </tr>
+                                <tr>
+                                    <td>目標</td>
+                                    <td>盡可能通關最高波次</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 25px;">獨特機制</h3>
+                <p>模式中設有隨機機制，包含「轉盤」及「骰子大富翁」。其中，骰子大富翁為先前版本限定玩法，未來是否會復刻尚待官方公布。</p>
+                
+                <p>此外，遊戲內建有獨特的「天使惡魔選擇系統」。若兩位玩家皆選擇正確選項，即可獲得額外的士兵單位。為確保效益最大化，強烈建議玩家在開局前就協調好選擇策略。</p>
+                
+                <h3 style="margin-top: 25px;">賽季與獎勵</h3>
+                <p>協作模式以 9 天為一個賽季週期。通關不同難度等級皆可獲得對應獎勵。值得一提的是，此模式提供大量的木材資源，是升級指揮所木材短缺時，快速累積資源的有效途徑。</p>
+            </div>
+
+            <div class="mode-detail-section">
+                <h2>♾️ 無限</h2>
+                
+                <p>無限模式要求玩家佈置穩固的陣型，以對抗不斷重生且數量湧入的敵人。目前每個無限賽季為 7 天，並依序配置 7 組不同的特定敵人。其中，第一天的「死亡之焰」與第六天的「腐蝕軍團」通常被認為是難度最高的挑戰。</p>
+                
+                <div class="stats-table-container">
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>特色</th>
+                                    <th>說明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>對戰形式</td>
+                                    <td>PVE</td>
+                                </tr>
+                                <tr>
+                                    <td>對戰形式</td>
+                                    <td>盡可能殺傷敵人</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 25px;">分組與獎勵</h3>
+                <p>隨著隊伍的總傷害累積提高，玩家會從第1小組晉升到第3小組，每日排名獎勵也將隨之提升。</p>
+                
+                <p>該模式最核心的關鍵獎勵是 鍛造石，它是現階段遊戲中最珍稀的資源，士兵等級想提升至 7 級以上皆須仰賴它。當玩家成功進入第3小組後，每日分別在總傷害達到 3M 和 7M 時，會額外獲得 50 和 100 鍛造石。</p>
+                
+                <div class="note">
+                    <strong>💡 戰略目標：</strong> 達成每日總傷害 7M 以上是每個進階玩家的必經考驗。此外，每日傷害達到 8M 以上還可額外獲得一個傳奇寶箱，長期累積將帶來巨大的成長收益。
+                </div>
+            </div>
+
+            <div class="mode-detail-section">
+                <h2>🎯 狩獵</h2>
+                
+                <p>狩獵模式要求玩家佈置陣型，以對抗強大的 Boss 單位。現行版本 Boss 分為「魔花」與「雙頭龍」，兩者具有不同的弱點機制與佈陣策略。</p>
+                
+                <div class="stats-table-container">
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>特色</th>
+                                    <th>說明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>對戰形式</td>
+                                    <td>PVE</td>
+                                </tr>
+                                <tr>
+                                    <td>目標</td>
+                                    <td>盡可能殺傷敵人</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 25px;">賽季獎勵</h3>
+                <p>除了少數頂端玩家，大多數玩家的通關目標是穩定獲取每個狩獵賽季的賽季獎勵。當進入第3小組時，於賽季總傷害達到 6M、24M 和 60M 時，玩家將分別獲取 100、150 及 200 鍛造石。</p>
+                
+                <p>相較於無限模式，狩獵模式的整體難度較低，且攻擊魔花通常能打出比雙頭龍更高的傷害總額。在隊伍尚未成長完全前，依靠選擇攻擊魔花以獲取較高的賽季總傷害，不失為一種高效的成長策略。大多數玩家在進入養成中期後，即可達成每賽季 60M 總傷害的目標。</p>
+            </div>
+
+            <div class="mode-detail-section">
+                <h2>🗂️ 沙盤演兵</h2>
+                
+                <p>布置部隊通關。</p>
+                
+                <div class="stats-table-container">
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>特色</th>
+                                    <th>說明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>對戰形式</td>
+                                    <td>排兵部陣</td>
+                                </tr>
+                                <tr>
+                                    <td>目標</td>
+                                    <td>自由調整隊形，進行戰術模擬</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="note">
+                    <strong>⚠️ 筆者觀點：</strong> 在當前版本中，沙盤兵演的實用性較低，被認為是一個尚待開發或優化的設計。
+                </div>
+            </div>
+
+            <div class="mode-detail-section">
+                <h2>🐺 公會狩獵</h2>
+                
+                <p>公會狩獵原為排名前 16 名公會於賽季第二週進行的限定活動，後隨玩家人數增多，範圍已擴大至前 32 名公會均可參與。</p>
+                
+                <div class="stats-table-container">
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>特色</th>
+                                    <th>說明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>對戰形式</td>
+                                    <td>PVE</td>
+                                </tr>
+                                <tr>
+                                    <td>目標</td>
+                                    <td>在活動時間內，對領地敵人造成傷害</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 25px;">玩法與獎勵</h3>
+                <p>玩家需組織隊伍，攻擊領地區塊上的敵人。每個敵人皆分為「簡單」、「普通」、「困難」三個難度等級，必須依序通關前一等級後才能挑戰更高等級。</p>
+                
+                <p>此模式主要包含個人總傷害競賽與公會玩家總傷害競賽兩部分。主要獎勵為鑽石。</p>
+            </div>
+            
+            <div class="mode-detail-section">
+                <h2>⚔️ 公會戰爭</h2>
+                
+                <p>公會戰爭是目前排名前 32 名公會參與的核心 PVP 玩法。參戰公會將被分組在幾個特定的沙盤地圖上，進行類似國戰遊戲的策略戰爭。</p>
+                
+                <div class="stats-table-container">
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>特色</th>
+                                    <th>說明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>對戰形式</td>
+                                    <td>PVP</td>
+                                </tr>
+                                <tr>
+                                    <td>目標</td>
+                                    <td>獲取積分，提升公會排名</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 25px;">積分獲取與團隊合作</h3>
+                <p>獎勵分為個人積分和公會積分兩部分。積分獲取途徑包括：攻擊敵方玩家、佔領領地，以及攻擊地圖中央的 Boss。</p>
+                
+                <p>此模式的勝敗除了取決於隊伍的士兵強度外，玩家的活躍度也具有高度相關性。公會若想取得最高積分，成員間的緊密合作與策略部署至關重要。</p>
+            </div>
+            
+            <div style="height: 20px;"></div>
+
+        </div>
+        
+        <hr>
+
+    </div>
+<p class="update-info">
+        © 萌新軍本部 製作<br>
+    </p>
+
+    <script src="../assets/js/app.js"></script>
+</body>
+
+</html>
+
